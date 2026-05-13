@@ -24,6 +24,14 @@ export const ROLE_SHORT: Record<Role, string> = {
   analyste: 'AN',
 };
 
+export type PermissionState = 'FULL' | 'READ_ALL' | 'READ_OWN' | 'HIDDEN';
+
+export type RolePermissions = {
+  [module: string]: {
+    [action: string]: PermissionState;
+  };
+};
+
 export type ScopeLevel = 'national' | 'provincial' | 'district';
 
 export interface Scope {
@@ -38,6 +46,8 @@ export interface Scope {
   };
 }
 
+export type UserStatus = 'active' | 'suspended' | 'pending_activation' | 'disabled';
+
 export interface User {
   id: string;
   email: string;
@@ -49,6 +59,12 @@ export interface User {
   function?: string;
   /** scope ids accessibles par l'utilisateur */
   scopeIds: string[];
+  status: UserStatus;
+  permissions: RolePermissions;
+  mfaEnabled: boolean;
+  lastLoginAt: Date | null;
+  createdAt: Date;
+  createdBy: string;
 }
 
 export interface Notification {

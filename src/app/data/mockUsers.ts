@@ -1,19 +1,10 @@
 import type { User } from '../types';
-
-export type UserStatus = 'active' | 'suspended' | 'disabled' | 'pending_activation';
-
-export interface ExtendedUser extends User {
-  status: UserStatus;
-  lastLoginAt: string | null;
-  mfaEnabled: boolean;
-  createdAt: string;
-  createdBy: string;
-}
+import { getDefaultPermissions } from '../lib/permissions';
 
 export interface MockCredentials {
   email: string;
   password: string;
-  user: ExtendedUser;
+  user: User;
 }
 
 export const MOCK_CREDENTIALS: MockCredentials[] = [
@@ -35,6 +26,7 @@ export const MOCK_CREDENTIALS: MockCredentials[] = [
       mfaEnabled: true,
       createdAt: '2024-01-15T08:00:00Z',
       createdBy: 'system',
+      permissions: getDefaultPermissions('admin'),
     },
   },
   {
@@ -54,6 +46,7 @@ export const MOCK_CREDENTIALS: MockCredentials[] = [
       lastLoginAt: new Date(Date.now() - 5 * 60 * 60 * 1000).toISOString(),
       mfaEnabled: false,
       createdAt: '2024-02-01T09:30:00Z',
+      permissions: getDefaultPermissions('gestionnaire_national'),
       createdBy: 'u1',
     },
   },
@@ -74,6 +67,7 @@ export const MOCK_CREDENTIALS: MockCredentials[] = [
       lastLoginAt: new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString(),
       mfaEnabled: true,
       createdAt: '2024-02-15T10:00:00Z',
+      permissions: getDefaultPermissions('gestionnaire_national'),
       createdBy: 'u1',
     },
   },
@@ -94,6 +88,7 @@ export const MOCK_CREDENTIALS: MockCredentials[] = [
       lastLoginAt: new Date(Date.now() - 2 * 60 * 60 * 1000).toISOString(),
       mfaEnabled: false,
       createdAt: '2024-03-01T08:00:00Z',
+      permissions: getDefaultPermissions('gestionnaire_provincial'),
       createdBy: 'u2',
     },
   },
@@ -114,6 +109,7 @@ export const MOCK_CREDENTIALS: MockCredentials[] = [
       lastLoginAt: new Date(Date.now() - 8 * 60 * 60 * 1000).toISOString(),
       mfaEnabled: false,
       createdAt: '2024-03-05T09:00:00Z',
+      permissions: getDefaultPermissions('gestionnaire_provincial'),
       createdBy: 'u2',
     },
   },
@@ -134,6 +130,7 @@ export const MOCK_CREDENTIALS: MockCredentials[] = [
       lastLoginAt: new Date(Date.now() - 3 * 24 * 60 * 60 * 1000).toISOString(),
       mfaEnabled: true,
       createdAt: '2024-03-10T10:30:00Z',
+      permissions: getDefaultPermissions('gestionnaire_provincial'),
       createdBy: 'u2',
     },
   },
@@ -154,6 +151,7 @@ export const MOCK_CREDENTIALS: MockCredentials[] = [
       lastLoginAt: new Date(Date.now() - 12 * 60 * 60 * 1000).toISOString(),
       mfaEnabled: false,
       createdAt: '2024-03-12T11:00:00Z',
+      permissions: getDefaultPermissions('gestionnaire_provincial'),
       createdBy: 'u2',
     },
   },
@@ -174,6 +172,7 @@ export const MOCK_CREDENTIALS: MockCredentials[] = [
       lastLoginAt: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString(),
       mfaEnabled: false,
       createdAt: '2024-03-15T08:30:00Z',
+      permissions: getDefaultPermissions('gestionnaire_provincial'),
       createdBy: 'u2',
     },
   },
@@ -194,6 +193,7 @@ export const MOCK_CREDENTIALS: MockCredentials[] = [
       lastLoginAt: new Date(Date.now() - 4 * 60 * 60 * 1000).toISOString(),
       mfaEnabled: false,
       createdAt: '2024-03-20T09:00:00Z',
+      permissions: getDefaultPermissions('superviseur_district'),
       createdBy: 'u4',
     },
   },
@@ -214,6 +214,7 @@ export const MOCK_CREDENTIALS: MockCredentials[] = [
       lastLoginAt: new Date(Date.now() - 6 * 60 * 60 * 1000).toISOString(),
       mfaEnabled: false,
       createdAt: '2024-03-22T10:00:00Z',
+      permissions: getDefaultPermissions('superviseur_district'),
       createdBy: 'u5',
     },
   },
@@ -234,6 +235,7 @@ export const MOCK_CREDENTIALS: MockCredentials[] = [
       lastLoginAt: new Date(Date.now() - 18 * 60 * 60 * 1000).toISOString(),
       mfaEnabled: true,
       createdAt: '2024-03-25T08:00:00Z',
+      permissions: getDefaultPermissions('superviseur_district'),
       createdBy: 'u4',
     },
   },
@@ -254,6 +256,7 @@ export const MOCK_CREDENTIALS: MockCredentials[] = [
       lastLoginAt: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000).toISOString(),
       mfaEnabled: false,
       createdAt: '2024-03-28T09:30:00Z',
+      permissions: getDefaultPermissions('superviseur_district'),
       createdBy: 'u4',
     },
   },
@@ -274,6 +277,7 @@ export const MOCK_CREDENTIALS: MockCredentials[] = [
       lastLoginAt: new Date(Date.now() - 30 * 60 * 60 * 1000).toISOString(),
       mfaEnabled: false,
       createdAt: '2024-04-01T10:00:00Z',
+      permissions: getDefaultPermissions('superviseur_district'),
       createdBy: 'u6',
     },
   },
@@ -294,6 +298,7 @@ export const MOCK_CREDENTIALS: MockCredentials[] = [
       lastLoginAt: new Date(Date.now() - 5 * 24 * 60 * 60 * 1000).toISOString(),
       mfaEnabled: false,
       createdAt: '2024-04-05T08:30:00Z',
+      permissions: getDefaultPermissions('superviseur_district'),
       createdBy: 'u6',
     },
   },
@@ -314,6 +319,7 @@ export const MOCK_CREDENTIALS: MockCredentials[] = [
       lastLoginAt: new Date(Date.now() - 15 * 24 * 60 * 60 * 1000).toISOString(),
       mfaEnabled: false,
       createdAt: '2024-04-08T09:00:00Z',
+      permissions: getDefaultPermissions('superviseur_district'),
       createdBy: 'u6',
     },
   },
@@ -334,6 +340,7 @@ export const MOCK_CREDENTIALS: MockCredentials[] = [
       lastLoginAt: new Date(Date.now() - 60 * 24 * 60 * 60 * 1000).toISOString(),
       mfaEnabled: false,
       createdAt: '2024-04-10T10:30:00Z',
+      permissions: getDefaultPermissions('superviseur_district'),
       createdBy: 'u8',
     },
   },
@@ -354,6 +361,7 @@ export const MOCK_CREDENTIALS: MockCredentials[] = [
       lastLoginAt: new Date(Date.now() - 3 * 60 * 60 * 1000).toISOString(),
       mfaEnabled: true,
       createdAt: '2024-04-12T08:00:00Z',
+      permissions: getDefaultPermissions('analyste'),
       createdBy: 'u1',
     },
   },
@@ -374,6 +382,7 @@ export const MOCK_CREDENTIALS: MockCredentials[] = [
       lastLoginAt: new Date(Date.now() - 6 * 60 * 60 * 1000).toISOString(),
       mfaEnabled: false,
       createdAt: '2024-04-15T09:00:00Z',
+      permissions: getDefaultPermissions('analyste'),
       createdBy: 'u2',
     },
   },
@@ -394,6 +403,7 @@ export const MOCK_CREDENTIALS: MockCredentials[] = [
       lastLoginAt: new Date(Date.now() - 12 * 60 * 60 * 1000).toISOString(),
       mfaEnabled: true,
       createdAt: '2024-04-18T10:00:00Z',
+      permissions: getDefaultPermissions('analyste'),
       createdBy: 'u2',
     },
   },
@@ -414,6 +424,7 @@ export const MOCK_CREDENTIALS: MockCredentials[] = [
       lastLoginAt: new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString(),
       mfaEnabled: false,
       createdAt: '2024-04-20T08:30:00Z',
+      permissions: getDefaultPermissions('analyste'),
       createdBy: 'u4',
     },
   },
@@ -434,6 +445,7 @@ export const MOCK_CREDENTIALS: MockCredentials[] = [
       lastLoginAt: new Date(Date.now() - 48 * 60 * 60 * 1000).toISOString(),
       mfaEnabled: false,
       createdAt: '2024-04-22T09:00:00Z',
+      permissions: getDefaultPermissions('analyste'),
       createdBy: 'u5',
     },
   },
@@ -454,6 +466,7 @@ export const MOCK_CREDENTIALS: MockCredentials[] = [
       lastLoginAt: new Date(Date.now() - 4 * 24 * 60 * 60 * 1000).toISOString(),
       mfaEnabled: false,
       createdAt: '2024-04-25T10:00:00Z',
+      permissions: getDefaultPermissions('analyste'),
       createdBy: 'u6',
     },
   },
@@ -474,6 +487,7 @@ export const MOCK_CREDENTIALS: MockCredentials[] = [
       lastLoginAt: null,
       mfaEnabled: false,
       createdAt: new Date(Date.now() - 12 * 24 * 60 * 60 * 1000).toISOString(),
+      permissions: getDefaultPermissions('agent_terrain'),
       createdBy: 'u9',
     },
   },
@@ -494,6 +508,7 @@ export const MOCK_CREDENTIALS: MockCredentials[] = [
       lastLoginAt: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString(),
       mfaEnabled: false,
       createdAt: '2024-04-28T08:00:00Z',
+      permissions: getDefaultPermissions('gestionnaire_provincial'),
       createdBy: 'u2',
     },
   },
@@ -514,6 +529,7 @@ export const MOCK_CREDENTIALS: MockCredentials[] = [
       lastLoginAt: new Date(Date.now() - 8 * 60 * 60 * 1000).toISOString(),
       mfaEnabled: false,
       createdAt: '2024-05-01T09:00:00Z',
+      permissions: getDefaultPermissions('agent_terrain'),
       createdBy: 'u9',
     },
   },

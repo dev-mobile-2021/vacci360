@@ -4,6 +4,7 @@ import { AuthProvider, useAuth } from './lib/auth';
 import { ScopeProvider } from './lib/scope';
 import { NotificationProvider } from './lib/notifications';
 import { ToastProvider } from './lib/toast';
+import { PermissionsProvider } from './lib/permissions-context';
 import { AppShell } from './components/shell/AppShell';
 import { EmptyState } from './components/layout/EmptyState';
 import LoginPage from './pages/LoginPage';
@@ -19,6 +20,7 @@ import FacilitiesListPage from './pages/FacilitiesListPage';
 import FacilityDetailPage from './pages/FacilityDetailPage';
 import TeamsListPage from './pages/TeamsListPage';
 import TeamDetailPage from './pages/TeamDetailPage';
+import AdminUsersListPage from './pages/AdminUsersListPage';
 import { PLACEHOLDER_ROUTES } from './data/placeholderRoutes';
 
 function ProtectedRoute({ children }: { children: ReactNode }) {
@@ -55,9 +57,10 @@ export default function App() {
   return (
     <BrowserRouter>
       <AuthProvider>
-        <ScopeProvider>
-          <NotificationProvider>
-            <ToastProvider>
+        <PermissionsProvider>
+          <ScopeProvider>
+            <NotificationProvider>
+              <ToastProvider>
               <Routes>
                 <Route path="/login" element={<LoginPage />} />
 
@@ -80,6 +83,7 @@ export default function App() {
                   <Route index element={<Navigate to="/dashboard" replace />} />
                   <Route path="/dashboard" element={<DashboardPage />} />
                   <Route path="/profile" element={<ProfilePage />} />
+                  <Route path="/admin/utilisateurs" element={<AdminUsersListPage />} />
                   <Route path="/referentiel" element={<ReferentielHubPage />} />
                   <Route path="/referentiel/geographie" element={<GeographyPage />} />
                   <Route path="/referentiel/villages" element={<VillagesListPage />} />
@@ -109,9 +113,10 @@ export default function App() {
 
                 <Route path="*" element={<NotFoundPage />} />
               </Routes>
-            </ToastProvider>
-          </NotificationProvider>
-        </ScopeProvider>
+              </ToastProvider>
+            </NotificationProvider>
+          </ScopeProvider>
+        </PermissionsProvider>
       </AuthProvider>
     </BrowserRouter>
   );
