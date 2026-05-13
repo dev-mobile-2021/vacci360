@@ -117,14 +117,14 @@ const RECENT_ACTIVITY = [
 ];
 
 export default function ReferentielHubPage() {
-  const { showToast } = useToast();
+  const { toast } = useToast();
   const [isSyncing, setIsSyncing] = useState(false);
   const [syncProgress, setSyncProgress] = useState(0);
 
   const handleSync = async () => {
     setIsSyncing(true);
     setSyncProgress(0);
-    showToast({
+    toast({
       title: 'Synchronisation DHIS2 démarrée',
       description: 'La synchronisation avec DHIS2 est en cours...',
       tone: 'neutral',
@@ -135,7 +135,7 @@ export default function ReferentielHubPage() {
         if (prev >= 100) {
           clearInterval(interval);
           setIsSyncing(false);
-          showToast({
+          toast({
             title: 'Synchronisation terminée',
             description: 'Les données ont été synchronisées avec succès.',
             tone: 'success',
@@ -148,7 +148,7 @@ export default function ReferentielHubPage() {
   };
 
   const handleExport = () => {
-    showToast({
+    toast({
       title: 'Export en préparation',
       description: 'Votre fichier sera prêt dans quelques instants.',
       tone: 'neutral',
@@ -156,7 +156,7 @@ export default function ReferentielHubPage() {
   };
 
   const handleImport = () => {
-    showToast({
+    toast({
       title: 'Import de référentiel',
       description: 'Fonctionnalité en cours de développement.',
       tone: 'neutral',
@@ -164,7 +164,7 @@ export default function ReferentielHubPage() {
   };
 
   const handleReport = () => {
-    showToast({
+    toast({
       title: 'Rapport de qualité',
       description: 'Fonctionnalité en cours de développement.',
       tone: 'neutral',

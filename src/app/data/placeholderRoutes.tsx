@@ -1,6 +1,6 @@
 import {
   Map, Bell, ClipboardList, Activity, Package, Tent,
-  UserCog, GitBranch, BellRing, Settings, FileSearch,
+  GitBranch, BellRing, Settings, FileSearch,
 } from 'lucide-react';
 import type { LucideIcon } from 'lucide-react';
 
@@ -31,9 +31,6 @@ export const PLACEHOLDER_ROUTES: PlaceholderRouteConfig[] = [
   { path: '/nomades', icon: Tent, title: 'Populations nomades',
     description: "Identification des opportunités de vaccination des groupes mobiles.",
     sprintName: 'Sprint 4' },
-  { path: '/admin/utilisateurs', icon: UserCog, title: 'Gestion des utilisateurs',
-    description: 'Comptes, rôles et permissions (RBAC).',
-    sprintName: 'Sprint 1' },
   { path: '/admin/workflow', icon: GitBranch, title: 'Workflow Engine',
     description: 'Configuration des workflows de validation.',
     sprintName: 'Sprint 6' },

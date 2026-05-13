@@ -21,6 +21,7 @@ import FacilityDetailPage from './pages/FacilityDetailPage';
 import TeamsListPage from './pages/TeamsListPage';
 import TeamDetailPage from './pages/TeamDetailPage';
 import AdminUsersListPage from './pages/AdminUsersListPage';
+import AdminUserDetailPage from './pages/AdminUserDetailPage';
 import { PLACEHOLDER_ROUTES } from './data/placeholderRoutes';
 
 function ProtectedRoute({ children }: { children: ReactNode }) {
@@ -84,6 +85,7 @@ export default function App() {
                   <Route path="/dashboard" element={<DashboardPage />} />
                   <Route path="/profile" element={<ProfilePage />} />
                   <Route path="/admin/utilisateurs" element={<AdminUsersListPage />} />
+                  <Route path="/admin/utilisateurs/:id" element={<AdminUserDetailPage />} />
                   <Route path="/referentiel" element={<ReferentielHubPage />} />
                   <Route path="/referentiel/geographie" element={<GeographyPage />} />
                   <Route path="/referentiel/villages" element={<VillagesListPage />} />

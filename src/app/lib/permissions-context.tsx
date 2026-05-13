@@ -107,10 +107,6 @@ export function PermissionsProvider({ children }: { children: React.ReactNode })
     });
   };
 
-  if (!isLoaded) {
-    return <>{children}</>;
-  }
-
   return (
     <PermissionsContext.Provider
       value={{
