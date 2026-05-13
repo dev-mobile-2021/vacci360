@@ -1,5 +1,5 @@
 import {
-  Map, Bell, ClipboardList, Activity, Package, Tent,
+  Bell, ClipboardList, Activity, Package, Tent,
   GitBranch, BellRing, Settings, FileSearch,
 } from 'lucide-react';
 import type { LucideIcon } from 'lucide-react';
@@ -13,9 +13,6 @@ export interface PlaceholderRouteConfig {
 }
 
 export const PLACEHOLDER_ROUTES: PlaceholderRouteConfig[] = [
-  { path: '/carte', icon: Map, title: 'Carte interactive',
-    description: 'Visualisation cartographique des villages, formations sanitaires et accessibilité.',
-    sprintName: 'Sprint 2 — Cartographie' },
   { path: '/alertes', icon: Bell, title: "Centre d'alertes",
     description: 'Configurez et consultez les alertes opérationnelles.',
     sprintName: 'Sprint 2' },

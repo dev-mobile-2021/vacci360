@@ -27,8 +27,9 @@ const SECTIONS: NavSection[] = [
   {
     title: 'PILOTAGE',
     items: [
-      { label: "Vue d'ensemble", icon: Home, to: '/dashboard' },
+      { label: "Vue d'ensemble", icon: Home, to: '/pilotage' },
       { label: 'Carte', icon: Map, to: '/carte' },
+      { label: 'Accessibilité', icon: Activity, to: '/carte/accessibilite' },
       { label: 'Alertes', icon: Bell, to: '/alertes' },
     ],
   },
