@@ -25,6 +25,12 @@ import AdminUserDetailPage from './pages/AdminUserDetailPage';
 import CartePage from './pages/CartePage';
 import CarteAccessibilitePage from './pages/CarteAccessibilitePage';
 import PilotagePage from './pages/PilotagePage';
+import LogistiqueHubPage from './pages/LogistiqueHubPage';
+import LogistiqueStockPage from './pages/LogistiqueStockPage';
+import LogistiqueChaineFroidPage from './pages/LogistiqueChaineFroidPage';
+import LogistiqueAllocationsPage from './pages/LogistiqueAllocationsPage';
+import LogistiqueRestitutionsPage from './pages/LogistiqueRestitutionsPage';
+import LogistiqueInventairePage from './pages/LogistiqueInventairePage';
 import { PLACEHOLDER_ROUTES } from './data/placeholderRoutes';
 
 function ProtectedRoute({ children }: { children: ReactNode }) {
@@ -100,6 +106,12 @@ export default function App() {
                   <Route path="/referentiel/formations/:id" element={<FacilityDetailPage />} />
                   <Route path="/referentiel/equipes" element={<TeamsListPage />} />
                   <Route path="/referentiel/equipes/:id" element={<TeamDetailPage />} />
+                  <Route path="/logistique" element={<LogistiqueHubPage />} />
+                  <Route path="/logistique/stock" element={<LogistiqueStockPage />} />
+                  <Route path="/logistique/chaine-froid" element={<LogistiqueChaineFroidPage />} />
+                  <Route path="/logistique/allocations" element={<LogistiqueAllocationsPage />} />
+                  <Route path="/logistique/restitutions" element={<LogistiqueRestitutionsPage />} />
+                  <Route path="/logistique/inventaire" element={<LogistiqueInventairePage />} />
 
                   {PLACEHOLDER_ROUTES.map((r) => (
                     <Route

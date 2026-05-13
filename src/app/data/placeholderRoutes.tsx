@@ -1,5 +1,5 @@
 import {
-  Bell, ClipboardList, Activity, Package, Tent,
+  Bell, ClipboardList, Activity, TrendingUp, Tent,
   GitBranch, BellRing, Settings, FileSearch,
 } from 'lucide-react';
 import type { LucideIcon } from 'lucide-react';
@@ -22,9 +22,9 @@ export const PLACEHOLDER_ROUTES: PlaceholderRouteConfig[] = [
   { path: '/supervision', icon: Activity, title: 'Supervision',
     description: 'Suivi en temps réel des équipes mobiles et de leur conformité.',
     sprintName: 'Sprint 5 — Exécution' },
-  { path: '/logistique', icon: Package, title: 'Logistique',
-    description: 'Gestion des stocks de vaccins, chaîne du froid et allocations.',
-    sprintName: 'Sprint 3 — Logistique' },
+  { path: '/logistique/previsions', icon: TrendingUp, title: 'Prévisions logistiques',
+    description: 'Planification des besoins futurs basée sur les tendances de consommation.',
+    sprintName: 'Sprint 6' },
   { path: '/nomades', icon: Tent, title: 'Populations nomades',
     description: "Identification des opportunités de vaccination des groupes mobiles.",
     sprintName: 'Sprint 4' },
