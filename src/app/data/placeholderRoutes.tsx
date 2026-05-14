@@ -1,5 +1,5 @@
 import {
-  Bell, ClipboardList, Activity, TrendingUp, Tent,
+  Bell, Activity, TrendingUp,
   GitBranch, BellRing, Settings, FileSearch,
 } from 'lucide-react';
 import type { LucideIcon } from 'lucide-react';
@@ -16,18 +16,12 @@ export const PLACEHOLDER_ROUTES: PlaceholderRouteConfig[] = [
   { path: '/alertes', icon: Bell, title: "Centre d'alertes",
     description: 'Configurez et consultez les alertes opérationnelles.',
     sprintName: 'Sprint 2' },
-  { path: '/planification', icon: ClipboardList, title: 'Micro-plans',
-    description: 'Génération, simulation et validation des micro-plans de campagne.',
-    sprintName: 'Sprint 4 — Planification' },
   { path: '/supervision', icon: Activity, title: 'Supervision',
     description: 'Suivi en temps réel des équipes mobiles et de leur conformité.',
     sprintName: 'Sprint 5 — Exécution' },
   { path: '/logistique/previsions', icon: TrendingUp, title: 'Prévisions logistiques',
     description: 'Planification des besoins futurs basée sur les tendances de consommation.',
     sprintName: 'Sprint 6' },
-  { path: '/nomades', icon: Tent, title: 'Populations nomades',
-    description: "Identification des opportunités de vaccination des groupes mobiles.",
-    sprintName: 'Sprint 4' },
   { path: '/admin/workflow', icon: GitBranch, title: 'Workflow Engine',
     description: 'Configuration des workflows de validation.',
     sprintName: 'Sprint 6' },

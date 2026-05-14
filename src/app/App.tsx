@@ -31,6 +31,13 @@ import LogistiqueChaineFroidPage from './pages/LogistiqueChaineFroidPage';
 import LogistiqueAllocationsPage from './pages/LogistiqueAllocationsPage';
 import LogistiqueRestitutionsPage from './pages/LogistiqueRestitutionsPage';
 import LogistiqueInventairePage from './pages/LogistiqueInventairePage';
+import PlanificationHubPage from './pages/PlanificationHubPage';
+import PlanificationNouveauPage from './pages/PlanificationNouveauPage';
+import PlanificationDetailPage from './pages/PlanificationDetailPage';
+import PlanificationAjustementPage from './pages/PlanificationAjustementPage';
+import NomadeHubPage from './pages/NomadeHubPage';
+import NomadeOpportuniteDetailPage from './pages/NomadeOpportuniteDetailPage';
+import NomadeCartographiePage from './pages/NomadeCartographiePage';
 import { PLACEHOLDER_ROUTES } from './data/placeholderRoutes';
 
 function ProtectedRoute({ children }: { children: ReactNode }) {
@@ -112,6 +119,14 @@ export default function App() {
                   <Route path="/logistique/allocations" element={<LogistiqueAllocationsPage />} />
                   <Route path="/logistique/restitutions" element={<LogistiqueRestitutionsPage />} />
                   <Route path="/logistique/inventaire" element={<LogistiqueInventairePage />} />
+
+                  <Route path="/planification" element={<PlanificationHubPage />} />
+                  <Route path="/planification/nouveau" element={<PlanificationNouveauPage />} />
+                  <Route path="/planification/:id" element={<PlanificationDetailPage />} />
+                  <Route path="/planification/:id/ajustement" element={<PlanificationAjustementPage />} />
+                  <Route path="/nomades" element={<NomadeHubPage />} />
+                  <Route path="/nomades/opportunites/:id" element={<NomadeOpportuniteDetailPage />} />
+                  <Route path="/nomades/cartographie" element={<NomadeCartographiePage />} />
 
                   {PLACEHOLDER_ROUTES.map((r) => (
                     <Route
