@@ -44,6 +44,13 @@ import SupervisionConformitePage from './pages/SupervisionConformitePage';
 import SupervisionAlertesPage from './pages/SupervisionAlertesPage';
 import SupervisionEquipesPage from './pages/SupervisionEquipesPage';
 import SupervisionRapportJournalierPage from './pages/SupervisionRapportJournalierPage';
+import ExecutifPage from './pages/ExecutifPage';
+import VacciBotPage from './pages/VacciBotPage';
+import AdminWorkflowPage from './pages/AdminWorkflowPage';
+import AdminWorkflowDetailPage from './pages/AdminWorkflowDetailPage';
+import AdminNotificationsPage from './pages/AdminNotificationsPage';
+import AdminParametresPage from './pages/AdminParametresPage';
+import AdminAuditPage from './pages/AdminAuditPage';
 import { PLACEHOLDER_ROUTES } from './data/placeholderRoutes';
 
 function ProtectedRoute({ children }: { children: ReactNode }) {
@@ -103,8 +110,11 @@ export default function App() {
                     </ProtectedRoute>
                   }
                 >
-                  <Route index element={<Navigate to="/pilotage" replace />} />
+                  <Route index element={<Navigate to="/executif" replace />} />
                   <Route path="/dashboard" element={<DashboardPage />} />
+                  <Route path="/executif" element={<ExecutifPage />} />
+                  <Route path="/executif/analytics" element={<ExecutifPage />} />
+                  <Route path="/vaccibot" element={<VacciBotPage />} />
                   <Route path="/pilotage" element={<PilotagePage />} />
                   <Route path="/carte" element={<CartePage />} />
                   <Route path="/carte/accessibilite" element={<CarteAccessibilitePage />} />
@@ -140,6 +150,12 @@ export default function App() {
                   <Route path="/supervision/alertes" element={<SupervisionAlertesPage />} />
                   <Route path="/supervision/equipes" element={<SupervisionEquipesPage />} />
                   <Route path="/supervision/rapport-journalier" element={<SupervisionRapportJournalierPage />} />
+
+                  <Route path="/admin/workflow" element={<AdminWorkflowPage />} />
+                  <Route path="/admin/workflow/:id" element={<AdminWorkflowDetailPage />} />
+                  <Route path="/admin/notifications" element={<AdminNotificationsPage />} />
+                  <Route path="/admin/parametres" element={<AdminParametresPage />} />
+                  <Route path="/admin/audit" element={<AdminAuditPage />} />
 
                   {PLACEHOLDER_ROUTES.map((r) => (
                     <Route

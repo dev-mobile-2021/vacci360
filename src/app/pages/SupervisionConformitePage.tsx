@@ -1,6 +1,6 @@
 import { useState, useMemo } from 'react';
 import { useNavigate } from 'react-router';
-import { Download, FileText, AlertTriangle, CheckCircle2, XCircle, TrendingDown } from 'lucide-react';
+import { Download, FileText, AlertTriangle, CheckCircle2, XCircle, TrendingDown, Sparkles } from 'lucide-react';
 import { Button } from '../components/ui/Button';
 import {
   Breadcrumb, BreadcrumbList, BreadcrumbItem, BreadcrumbLink,
@@ -271,6 +271,29 @@ export default function SupervisionConformitePage() {
           )}
         </div>
       </div>
+
+      {/* VacciBot encart */}
+      {lowConformanceTeams.length > 0 && (
+        <div className="rounded-lg border-l-4 p-4 flex gap-3" style={{ borderColor: '#E11D74', background: '#FFF1F5' }}>
+          <Sparkles size={16} className="flex-shrink-0 mt-0.5" style={{ color: '#E11D74' }} />
+          <div>
+            <div className="text-xs font-semibold mb-1" style={{ color: '#E11D74' }}>Analyse des écarts — VacciBot</div>
+            <p className="text-xs text-stone-700 leading-relaxed">
+              L'équipe <strong>{lowConformanceTeams[0]?.teamName}</strong> présente le score de conformité le plus faible
+              ({lowConformanceTeams[0]?.conformanceScore}%). Les causes probables incluent des incidents terrain récurrents ou
+              un manque de formation sur les protocoles PEV.
+              Recommandation : organiser une session de débriefing et vérifier les rapports de terrain des 7 derniers jours.
+            </p>
+            <button
+              onClick={() => navigate('/vaccibot')}
+              className="mt-2 text-xs font-medium px-2.5 py-1 rounded-md text-white"
+              style={{ background: '#E11D74' }}
+            >
+              Analyser avec VacciBot
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

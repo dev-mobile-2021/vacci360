@@ -2,7 +2,7 @@ import { useState, useMemo } from 'react';
 import { useNavigate } from 'react-router';
 import {
   Plus, Tent, Users, Shield, AlertTriangle, CheckCircle2,
-  Clock, ExternalLink,
+  Clock, ExternalLink, Sparkles,
 } from 'lucide-react';
 import { Button } from '../components/ui/Button';
 import { useAuth } from '../lib/auth';
@@ -132,6 +132,32 @@ export default function NomadeHubPage() {
           </div>
         ))}
       </div>
+
+      {/* VacciBot priorisation encart */}
+      {(() => {
+        const urgentCount = filtered.filter((o) => {
+          const diff = (o.windowEnd.getTime() - Date.now()) / 86400000;
+          return diff >= 0 && diff <= 7;
+        }).length;
+        const top3 = filtered
+          .filter((o) => { const diff = (o.windowEnd.getTime() - Date.now()) / 86400000; return diff >= 0 && diff <= 7; })
+          .slice(0, 3);
+        if (urgentCount === 0) return null;
+        return (
+          <div className="rounded-lg border-l-4 p-4 flex gap-3" style={{ borderColor: '#E11D74', background: '#FFF1F5' }}>
+            <Sparkles size={16} className="flex-shrink-0 mt-0.5" style={{ color: '#E11D74' }} />
+            <div className="flex-1">
+              <div className="text-xs font-semibold mb-1" style={{ color: '#E11D74' }}>Priorisation VacciBot</div>
+              <p className="text-xs text-stone-700 leading-relaxed">
+                <strong>{urgentCount} opportunité{urgentCount > 1 ? 's' : ''}</strong> requièrent une action urgente (fenêtre &lt; 7 jours).
+                {top3.length > 0 && (
+                  <> Priorité recommandée : {top3.map((o) => o.location.description).join(', ')}.</>
+                )}
+              </p>
+            </div>
+          </div>
+        );
+      })()}
 
       {/* Table */}
       <div className="bg-white rounded-xl border border-stone-200 overflow-hidden">

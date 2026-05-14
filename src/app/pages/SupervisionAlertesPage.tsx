@@ -1,6 +1,6 @@
 import { useState, useMemo } from 'react';
 import { useNavigate } from 'react-router';
-import { AlertTriangle, CheckCircle2, Clock, ShieldAlert, Download, ChevronRight } from 'lucide-react';
+import { AlertTriangle, CheckCircle2, Clock, ShieldAlert, Download, ChevronRight, Sparkles } from 'lucide-react';
 import { Button } from '../components/ui/Button';
 import {
   Breadcrumb, BreadcrumbList, BreadcrumbItem, BreadcrumbLink,
@@ -195,6 +195,21 @@ export default function SupervisionAlertesPage() {
           </div>
         ))}
       </div>
+
+      {/* VacciBot synthèse encart */}
+      {kpis.critiques > 0 && (
+        <div className="rounded-lg border-l-4 p-4 flex gap-3" style={{ borderColor: '#E11D74', background: '#FFF1F5' }}>
+          <Sparkles size={16} className="flex-shrink-0 mt-0.5" style={{ color: '#E11D74' }} />
+          <div>
+            <div className="text-xs font-semibold mb-1" style={{ color: '#E11D74' }}>Synthèse situationnelle — VacciBot</div>
+            <p className="text-xs text-stone-700 leading-relaxed">
+              <strong>{kpis.critiques} alerte{kpis.critiques > 1 ? 's' : ''} critique{kpis.critiques > 1 ? 's' : ''}</strong> sont actives en ce moment.
+              {' '}Les alertes géofence récurrentes dans le district de Bol suggèrent un problème routier récurrent ou une contrainte sécuritaire.
+              Recommandation : contacter le superviseur de zone et envisager une révision du périmètre de mission.
+            </p>
+          </div>
+        </div>
+      )}
 
       {/* Tabs + Bulk actions */}
       <div className="bg-white rounded-xl border border-stone-200 overflow-hidden">

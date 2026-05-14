@@ -3,7 +3,7 @@ import { useParams, useNavigate } from 'react-router';
 import {
   AlertTriangle, CheckCircle2, XCircle, Tent, ChevronRight,
   GitCompare, Clock, Zap, FileText,
-  ExternalLink, Fuel, Users, DollarSign,
+  ExternalLink, Fuel, Users, DollarSign, Sparkles,
 } from 'lucide-react';
 import { Button } from '../components/ui/Button';
 import { Modal } from '../components/ui/Modal';
@@ -151,6 +151,48 @@ function RejectModal({ open, onClose, onConfirm }: { open: boolean; onClose: () 
         />
       </div>
     </Modal>
+  );
+}
+
+// ─── VacciBot encart ─────────────────────────────────────────────────────────
+
+function VacciBotEncartPlan({ score, planId }: { score: number; planId: string }) {
+  const [open, setOpen] = useState(true);
+  const navigate = useNavigate();
+  const msg = score > 85
+    ? 'Ce micro-plan présente une excellente couverture estimée. Le scénario est faisable selon les ressources disponibles.'
+    : score >= 70
+    ? 'La couverture estimée est correcte. Vérifiez que les ressources logistiques sont confirmées avant validation.'
+    : "Attention : la couverture estimée est sous l'objectif PEV. Considérez d'ajouter une équipe ou d'étendre la période.";
+  if (!open) return (
+    <button onClick={() => setOpen(true)} className="flex items-center gap-1.5 text-xs text-ai font-medium hover:underline">
+      <Sparkles size={12} /> Voir recommandation VacciBot
+    </button>
+  );
+  return (
+    <div className="rounded-lg border-l-4 p-4 flex gap-3 relative" style={{ borderColor: '#E11D74', background: '#FFF1F5' }}>
+      <Sparkles size={16} className="flex-shrink-0 mt-0.5" style={{ color: '#E11D74' }} />
+      <div className="flex-1 min-w-0">
+        <div className="text-xs font-semibold mb-1" style={{ color: '#E11D74' }}>Recommandation VacciBot</div>
+        <p className="text-xs text-stone-700 leading-relaxed">{msg}</p>
+        <div className="flex gap-2 mt-2">
+          <button
+            onClick={() => navigate(`/planification/${planId}/ajustement`)}
+            className="text-xs font-medium px-2.5 py-1 rounded-md text-white"
+            style={{ background: '#E11D74' }}
+          >
+            Optimiser le plan
+          </button>
+          <button
+            onClick={() => navigate('/vaccibot')}
+            className="text-xs font-medium px-2.5 py-1 rounded-md text-stone-600 bg-white border border-stone-200 hover:border-stone-300"
+          >
+            Ouvrir VacciBot
+          </button>
+        </div>
+      </div>
+      <button onClick={() => setOpen(false)} className="text-stone-400 hover:text-stone-600 text-sm leading-none absolute top-2 right-3">✕</button>
+    </div>
   );
 }
 
@@ -658,6 +700,9 @@ export default function PlanificationDetailPage() {
           </div>
         </div>
       )}
+
+      {/* VacciBot encart */}
+      <VacciBotEncartPlan score={plan.systemProposal.score.coverage} planId={plan.id} />
 
       {nomadOpps.length > 0 && (
         <div className="bg-white border border-stone-200 rounded-lg p-4">

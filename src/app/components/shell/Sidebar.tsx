@@ -1,9 +1,9 @@
 import { useState } from 'react';
 import { NavLink } from 'react-router';
 import {
-  Home, Map, Bell, ClipboardList, Activity, Package, Tent,
+  BarChart2, Map, Bell, ClipboardList, Activity, Package, Tent,
   Globe, Building2, Users, UserCog, GitBranch, BellRing, Settings,
-  FileSearch, ChevronLeft, ChevronRight, HelpCircle, House,
+  FileSearch, ChevronLeft, ChevronRight, HelpCircle, House, Sparkles,
 } from 'lucide-react';
 import type { LucideIcon } from 'lucide-react';
 import { cn } from '../../lib/cn';
@@ -27,7 +27,8 @@ const SECTIONS: NavSection[] = [
   {
     title: 'PILOTAGE',
     items: [
-      { label: "Vue d'ensemble", icon: Home, to: '/pilotage' },
+      { label: "Vue d'ensemble", icon: BarChart2, to: '/executif' },
+      { label: 'VacciBot', icon: Sparkles, to: '/vaccibot' },
       { label: 'Carte', icon: Map, to: '/carte' },
       { label: 'Accessibilité', icon: Activity, to: '/carte/accessibilite' },
       { label: 'Alertes', icon: Bell, to: '/alertes' },
