@@ -1,5 +1,5 @@
 import {
-  Bell, Activity, TrendingUp,
+  Bell, TrendingUp,
   GitBranch, BellRing, Settings, FileSearch,
 } from 'lucide-react';
 import type { LucideIcon } from 'lucide-react';
@@ -16,10 +16,7 @@ export const PLACEHOLDER_ROUTES: PlaceholderRouteConfig[] = [
   { path: '/alertes', icon: Bell, title: "Centre d'alertes",
     description: 'Configurez et consultez les alertes opérationnelles.',
     sprintName: 'Sprint 2' },
-  { path: '/supervision', icon: Activity, title: 'Supervision',
-    description: 'Suivi en temps réel des équipes mobiles et de leur conformité.',
-    sprintName: 'Sprint 5 — Exécution' },
-  { path: '/logistique/previsions', icon: TrendingUp, title: 'Prévisions logistiques',
+{ path: '/logistique/previsions', icon: TrendingUp, title: 'Prévisions logistiques',
     description: 'Planification des besoins futurs basée sur les tendances de consommation.',
     sprintName: 'Sprint 6' },
   { path: '/admin/workflow', icon: GitBranch, title: 'Workflow Engine',

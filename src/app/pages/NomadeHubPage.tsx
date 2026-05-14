@@ -2,7 +2,7 @@ import { useState, useMemo } from 'react';
 import { useNavigate } from 'react-router';
 import {
   Plus, Tent, Users, Shield, AlertTriangle, CheckCircle2,
-  Clock, ChevronRight, ExternalLink,
+  Clock, ExternalLink,
 } from 'lucide-react';
 import { Button } from '../components/ui/Button';
 import { useAuth } from '../lib/auth';
@@ -16,6 +16,7 @@ import {
   type NomadOpportunity,
 } from '../data/mockNomadOpportunities';
 import { useToast } from '../lib/toast';
+import { NomadOpportunityCreateModal } from '../components/nomads/NomadOpportunityCreateModal';
 
 const TABS = [
   { key: 'all', label: 'Toutes les opportunités' },
@@ -46,6 +47,7 @@ export default function NomadeHubPage() {
   const { toast } = useToast();
   const { user } = useAuth();
   const [activeTab, setActiveTab] = useState<TabKey>('all');
+  const [createModalOpen, setCreateModalOpen] = useState(false);
 
   const canSeeDisplacedRefugee =
     user?.permissions?.['Nomades']?.['Voir'] &&
@@ -107,7 +109,7 @@ export default function NomadeHubPage() {
         </Breadcrumb>
         <div className="flex items-center justify-between mt-1">
           <h1 className="text-xl font-bold text-stone-900">Populations mobiles</h1>
-          <Button size="sm" onClick={() => toast({ type: 'info', title: 'Signalement', description: 'Formulaire disponible Sprint 5.' })}>
+          <Button size="sm" onClick={() => setCreateModalOpen(true)}>
             <Plus size={14} /> Signaler une opportunité
           </Button>
         </div>
@@ -246,6 +248,11 @@ export default function NomadeHubPage() {
           </table>
         </div>
       </div>
+
+      <NomadOpportunityCreateModal
+        isOpen={createModalOpen}
+        onClose={() => setCreateModalOpen(false)}
+      />
     </div>
   );
 }

@@ -38,6 +38,12 @@ import PlanificationAjustementPage from './pages/PlanificationAjustementPage';
 import NomadeHubPage from './pages/NomadeHubPage';
 import NomadeOpportuniteDetailPage from './pages/NomadeOpportuniteDetailPage';
 import NomadeCartographiePage from './pages/NomadeCartographiePage';
+import SupervisionPage from './pages/SupervisionPage';
+import SupervisionMissionDetailPage from './pages/SupervisionMissionDetailPage';
+import SupervisionConformitePage from './pages/SupervisionConformitePage';
+import SupervisionAlertesPage from './pages/SupervisionAlertesPage';
+import SupervisionEquipesPage from './pages/SupervisionEquipesPage';
+import SupervisionRapportJournalierPage from './pages/SupervisionRapportJournalierPage';
 import { PLACEHOLDER_ROUTES } from './data/placeholderRoutes';
 
 function ProtectedRoute({ children }: { children: ReactNode }) {
@@ -127,6 +133,13 @@ export default function App() {
                   <Route path="/nomades" element={<NomadeHubPage />} />
                   <Route path="/nomades/opportunites/:id" element={<NomadeOpportuniteDetailPage />} />
                   <Route path="/nomades/cartographie" element={<NomadeCartographiePage />} />
+
+                  <Route path="/supervision" element={<SupervisionPage />} />
+                  <Route path="/supervision/missions/:id" element={<SupervisionMissionDetailPage />} />
+                  <Route path="/supervision/conformite" element={<SupervisionConformitePage />} />
+                  <Route path="/supervision/alertes" element={<SupervisionAlertesPage />} />
+                  <Route path="/supervision/equipes" element={<SupervisionEquipesPage />} />
+                  <Route path="/supervision/rapport-journalier" element={<SupervisionRapportJournalierPage />} />
 
                   {PLACEHOLDER_ROUTES.map((r) => (
                     <Route
