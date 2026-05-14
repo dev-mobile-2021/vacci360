@@ -1,8 +1,9 @@
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import { useParams, useNavigate } from 'react-router';
 import {
   AlertTriangle, CheckCircle2, XCircle, Tent, ChevronRight,
-  GitCompare, Clock, User, MapPin, Zap, FileText,
+  GitCompare, Clock, Zap, FileText,
+  ExternalLink, Fuel, Users, DollarSign,
 } from 'lucide-react';
 import { Button } from '../components/ui/Button';
 import { Modal } from '../components/ui/Modal';
@@ -13,9 +14,13 @@ import {
 } from '../components/ui/breadcrumb';
 import {
   mockMicroPlans, MICROPLAN_STATUS_LABEL, MICROPLAN_STATUS_COLOR,
-  type MicroPlan, type PlanVersion,
+  type MicroPlan, type PlanVersion, type DayItinerary,
 } from '../data/mockMicroPlans';
 import { mockNomadOpportunities } from '../data/mockNomadOpportunities';
+import { mockStock } from '../data/mockStock';
+import { mockAllocations, ALLOCATION_STATUS_LABEL, ALLOCATION_STATUS_COLOR } from '../data/mockAllocations';
+import { PlanItineraryMap } from '../components/map/PlanItineraryMap';
+import { DayItineraryMap } from '../components/map/DayItineraryMap';
 
 const TABS = [
   { key: 'overview', label: "Vue d'ensemble" },
@@ -148,6 +153,339 @@ function RejectModal({ open, onClose, onConfirm }: { open: boolean; onClose: () 
     </Modal>
   );
 }
+
+// ─── Itinerary day block with map ↔ timeline sync ─────────────────────────────
+
+function ItineraryDayBlock({ itin, teamColor }: { itin: DayItinerary; teamColor: string }) {
+  const [selectedId, setSelectedId] = useState<string | null>(null);
+  const villageRefs = useRef<Record<string, HTMLDivElement | null>>({});
+
+  const handleMapClick = (id: string) => {
+    setSelectedId(id);
+    villageRefs.current[id]?.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  };
+
+  return (
+    <div className="space-y-2">
+      <div className="flex items-center gap-2 text-[11px] font-semibold text-stone-500 uppercase">
+        <span className="w-3 h-3 rounded-full inline-block" style={{ background: teamColor }} />
+        Jour {itin.day} —{' '}
+        {itin.date.toLocaleDateString('fr-FR', { weekday: 'long', day: '2-digit', month: 'short' })}
+        <span className="ml-auto normal-case font-normal text-stone-400">
+          {itin.villages.length} village{itin.villages.length > 1 ? 's' : ''} · {itin.totalDistanceKm} km
+        </span>
+      </div>
+      <div className="grid gap-3" style={{ gridTemplateColumns: '1fr 1fr' }}>
+        <DayItineraryMap itin={itin} selectedId={selectedId} onMarkerClick={handleMapClick} />
+        <div className="space-y-1 max-h-[250px] overflow-y-auto pr-1">
+          {itin.villages.map((v) => (
+            <div
+              key={v.villageId}
+              ref={(el) => { villageRefs.current[v.villageId] = el; }}
+              onClick={() => setSelectedId(v.villageId)}
+              className={`flex items-start gap-2 text-xs px-2.5 py-2 rounded-lg border cursor-pointer transition-colors ${
+                selectedId === v.villageId
+                  ? 'bg-primary/5 border-primary/30 ring-1 ring-primary/30'
+                  : v.nomadOpportunityId
+                    ? 'bg-ai-50 border-ai/20 hover:bg-ai-50'
+                    : 'bg-white border-stone-100 hover:bg-stone-50'
+              }`}
+            >
+              <span className="w-5 h-5 rounded-full flex items-center justify-center text-[10px] font-bold text-white shrink-0 mt-0.5"
+                style={{ background: v.nomadOpportunityId ? '#E11D74' : '#78716C' }}>
+                {v.order}
+              </span>
+              <div className="flex-1 min-w-0">
+                <div className="font-medium text-stone-800 truncate">{v.villageName}</div>
+                <div className="text-stone-400 text-[10px]">
+                  {v.estimatedArrival} · {v.targetChildren} enfants · {v.estimatedDuration} min
+                </div>
+                {v.nomadOpportunityId && (
+                  <div className="text-ai-600 text-[10px] font-medium flex items-center gap-1 mt-0.5">
+                    <Tent size={9} /> Opportunité nomade intégrée
+                  </div>
+                )}
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// ─── Resources tab ────────────────────────────────────────────────────────────
+
+function ResourcesTab({ plan }: { plan: MicroPlan }) {
+  const navigate = useNavigate();
+  const activeVersion = plan.versions[plan.activeVersionIndex];
+
+  const totalChildren = activeVersion?.itineraries.reduce(
+    (s, itin) => s + itin.villages.reduce((vs, v) => vs + v.targetChildren, 0),
+    0,
+  ) ?? 0;
+
+  const vaccineData = plan.generationParams.antigens.map((antigen) => {
+    const reqDoses = Math.round(totalChildren * 1.15);
+    const provinceStock = mockStock.filter(
+      (s) => s.antigen === antigen && s.locationId === plan.provinceId && s.level === 'provincial',
+    );
+    const available = provinceStock.reduce((s, st) => s + st.quantityAvailable, 0);
+    const reserved = provinceStock.reduce((s, st) => s + st.quantityReserved, 0);
+    const status: 'ok' | 'warning' | 'critical' =
+      available === 0 ? 'critical' : available < reqDoses ? 'warning' : 'ok';
+    return { antigen, reqDoses, available, reserved, status };
+  });
+
+  const globalStatus: 'ok' | 'warning' | 'critical' =
+    vaccineData.some((v) => v.status === 'critical') ? 'critical' :
+    vaccineData.some((v) => v.status === 'warning') ? 'warning' : 'ok';
+
+  const FUEL_PRICE = 800;
+  const PER_DIEM_RATE = 5000;
+  const fuelCost = plan.systemProposal.estimatedFuelLiters * FUEL_PRICE;
+  const perDiemTotal = plan.generationParams.availableTeams.length * plan.systemProposal.totalDays * PER_DIEM_RATE;
+  const otherCosts = Math.max(0, plan.systemProposal.estimatedCost - fuelCost - perDiemTotal);
+
+  const planAllocations = mockAllocations.filter((a) => a.campaignId === plan.campaignId);
+  const allocatedFuel = planAllocations.reduce((s, a) => s + a.fuelLiters, 0);
+
+  const statusConfig = {
+    ok: {
+      bg: 'bg-success/5 border-success/30',
+      icon: CheckCircle2,
+      iconColor: 'text-success',
+      label: 'Ressources suffisantes',
+      desc: "Tous les antigènes sont disponibles en quantité suffisante pour ce plan.",
+    },
+    warning: {
+      bg: 'bg-warning/5 border-warning/30',
+      icon: AlertTriangle,
+      iconColor: 'text-warning',
+      label: 'Attention : ressources insuffisantes',
+      desc: "Certains antigènes présentent un déficit de stock par rapport aux besoins estimés.",
+    },
+    critical: {
+      bg: 'bg-danger/5 border-danger/30',
+      icon: XCircle,
+      iconColor: 'text-danger',
+      label: 'Ressources critiques',
+      desc: "Rupture de stock détectée pour au moins un antigène requis.",
+    },
+  };
+  const cfg = statusConfig[globalStatus];
+  const CfgIcon = cfg.icon;
+
+  return (
+    <div className="space-y-5">
+      {/* Section 1 — Global status */}
+      <div className={`rounded-xl border p-4 flex items-start gap-3 ${cfg.bg}`}>
+        <CfgIcon size={18} className={`${cfg.iconColor} shrink-0 mt-0.5`} />
+        <div>
+          <div className="text-sm font-semibold text-stone-800">{cfg.label}</div>
+          <div className="text-xs text-stone-500 mt-0.5">{cfg.desc}</div>
+        </div>
+      </div>
+
+      {/* Section 2 — Vaccines */}
+      <div className="bg-white rounded-xl border border-stone-200 overflow-hidden">
+        <div className="px-4 py-3 border-b border-stone-100">
+          <h3 className="text-sm font-semibold text-stone-800">Vaccins</h3>
+          <p className="text-[11px] text-stone-400 mt-0.5">
+            Requis estimé (enfants ciblés × 1 dose +15% perte) · Disponible au dépôt provincial
+          </p>
+        </div>
+        <table className="w-full text-sm">
+          <thead>
+            <tr className="bg-stone-50 border-b border-stone-100">
+              {['Antigène', 'Requis', 'Disponible', 'Réservé', 'Statut'].map((h) => (
+                <th key={h} className="px-3 py-2 text-left text-[11px] font-semibold text-stone-500 uppercase">{h}</th>
+              ))}
+            </tr>
+          </thead>
+          <tbody>
+            {vaccineData.map((v) => (
+              <tr key={v.antigen} className="border-b border-stone-50 last:border-0 hover:bg-stone-50/40">
+                <td className="px-3 py-2.5 font-semibold text-stone-800 text-xs">{v.antigen}</td>
+                <td className="px-3 py-2.5 text-xs text-stone-600">{v.reqDoses.toLocaleString('fr-FR')} doses</td>
+                <td className="px-3 py-2.5 text-xs">
+                  <span className={v.available >= v.reqDoses ? 'text-success font-medium' : v.available === 0 ? 'text-danger font-medium' : 'text-warning font-medium'}>
+                    {v.available.toLocaleString('fr-FR')} doses
+                  </span>
+                </td>
+                <td className="px-3 py-2.5 text-xs text-stone-500">{v.reserved.toLocaleString('fr-FR')} doses</td>
+                <td className="px-3 py-2.5">
+                  <div className="flex items-center gap-2">
+                    {v.status === 'ok' && <span className="flex items-center gap-1 text-[11px] text-success font-semibold"><CheckCircle2 size={11} /> Suffisant</span>}
+                    {v.status === 'warning' && (
+                      <div className="flex items-center gap-2">
+                        <span className="flex items-center gap-1 text-[11px] text-warning font-semibold"><AlertTriangle size={11} /> Insuffisant</span>
+                        <button
+                          className="text-[11px] text-primary hover:underline flex items-center gap-0.5"
+                          onClick={() => navigate(`/logistique/stock?filter=${v.antigen}`)}
+                        >
+                          Voir stock <ExternalLink size={9} />
+                        </button>
+                      </div>
+                    )}
+                    {v.status === 'critical' && (
+                      <div className="flex items-center gap-2">
+                        <span className="flex items-center gap-1 text-[11px] text-danger font-semibold"><XCircle size={11} /> Rupture</span>
+                        <button
+                          className="text-[11px] text-primary hover:underline flex items-center gap-0.5"
+                          onClick={() => navigate(`/logistique/stock?filter=${v.antigen}`)}
+                        >
+                          Voir stock <ExternalLink size={9} />
+                        </button>
+                      </div>
+                    )}
+                  </div>
+                </td>
+              </tr>
+            ))}
+            {vaccineData.length === 0 && (
+              <tr><td colSpan={5} className="px-3 py-6 text-center text-xs text-stone-400">Aucun antigène défini pour ce plan</td></tr>
+            )}
+          </tbody>
+        </table>
+      </div>
+
+      {/* Section 3 — Logistics */}
+      <div className="bg-white rounded-xl border border-stone-200 p-4">
+        <h3 className="text-sm font-semibold text-stone-800 mb-3">Logistique</h3>
+        <div className="grid grid-cols-3 gap-3">
+          <div className="bg-stone-50 rounded-lg p-3">
+            <div className="flex items-center gap-1.5 text-[11px] text-stone-500 mb-2">
+              <Fuel size={11} /> Carburant
+            </div>
+            <div className="space-y-1.5 text-xs">
+              <div className="flex justify-between">
+                <span className="text-stone-500">Estimé</span>
+                <span className="font-semibold text-stone-700">{plan.systemProposal.estimatedFuelLiters} L</span>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-stone-500">Alloué</span>
+                <span className={`font-semibold ${allocatedFuel >= plan.systemProposal.estimatedFuelLiters ? 'text-success' : 'text-warning'}`}>
+                  {allocatedFuel} L
+                </span>
+              </div>
+              <div className="flex justify-between border-t border-stone-100 pt-1.5">
+                <span className="text-stone-500">Coût ({FUEL_PRICE} FCFA/L)</span>
+                <span className="font-semibold text-stone-700">{fuelCost.toLocaleString('fr-FR')} FCFA</span>
+              </div>
+            </div>
+          </div>
+          <div className="bg-stone-50 rounded-lg p-3">
+            <div className="flex items-center gap-1.5 text-[11px] text-stone-500 mb-2">
+              <Users size={11} /> Per diem
+            </div>
+            <div className="space-y-1.5 text-xs">
+              <div className="flex justify-between">
+                <span className="text-stone-500">Équipes</span>
+                <span className="font-semibold text-stone-700">{plan.generationParams.availableTeams.length}</span>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-stone-500">Jours</span>
+                <span className="font-semibold text-stone-700">{plan.systemProposal.totalDays}</span>
+              </div>
+              <div className="flex justify-between border-t border-stone-100 pt-1.5">
+                <span className="text-stone-500">Total ({PER_DIEM_RATE.toLocaleString('fr-FR')} FCFA/j)</span>
+                <span className="font-semibold text-stone-700">{perDiemTotal.toLocaleString('fr-FR')} FCFA</span>
+              </div>
+            </div>
+          </div>
+          <div className="bg-stone-50 rounded-lg p-3">
+            <div className="flex items-center gap-1.5 text-[11px] text-stone-500 mb-2">
+              <DollarSign size={11} /> Coût total estimé
+            </div>
+            <div className="space-y-1.5 text-xs">
+              <div className="flex justify-between">
+                <span className="text-stone-500">Carburant</span>
+                <span className="font-medium text-stone-600">{fuelCost.toLocaleString('fr-FR')}</span>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-stone-500">Per diem</span>
+                <span className="font-medium text-stone-600">{perDiemTotal.toLocaleString('fr-FR')}</span>
+              </div>
+              {otherCosts > 0 && (
+                <div className="flex justify-between">
+                  <span className="text-stone-500">Autres</span>
+                  <span className="font-medium text-stone-600">{otherCosts.toLocaleString('fr-FR')}</span>
+                </div>
+              )}
+              <div className="flex justify-between border-t border-stone-200 pt-1.5 font-semibold">
+                <span className="text-stone-700">Total</span>
+                <span className="text-stone-900">{plan.systemProposal.estimatedCost.toLocaleString('fr-FR')} FCFA</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Section 4 — Linked allocations */}
+      <div className="bg-white rounded-xl border border-stone-200 overflow-hidden">
+        <div className="px-4 py-3 border-b border-stone-100 flex items-center justify-between">
+          <h3 className="text-sm font-semibold text-stone-800">
+            Allocations liées ({planAllocations.length})
+          </h3>
+          <button
+            className="text-[11px] text-primary hover:underline flex items-center gap-1"
+            onClick={() => navigate(`/logistique/allocations?filter=${plan.id}`)}
+          >
+            Voir toutes les allocations <ExternalLink size={10} />
+          </button>
+        </div>
+        {planAllocations.length === 0 ? (
+          <div className="py-6 text-center text-xs text-stone-400">Aucune allocation liée à ce plan</div>
+        ) : (
+          <table className="w-full text-sm">
+            <thead>
+              <tr className="bg-stone-50 border-b border-stone-100">
+                {['Équipe', 'Vaccins alloués', 'Statut chargement', 'Actions'].map((h) => (
+                  <th key={h} className="px-3 py-2 text-left text-[11px] font-semibold text-stone-500 uppercase">{h}</th>
+                ))}
+              </tr>
+            </thead>
+            <tbody>
+              {planAllocations.map((alloc) => (
+                <tr key={alloc.id} className="border-b border-stone-50 last:border-0 hover:bg-stone-50/40">
+                  <td className="px-3 py-2.5">
+                    <div className="text-xs font-medium text-stone-800">{alloc.teamName}</div>
+                    <div className="text-[11px] text-stone-400">{alloc.facilityName}</div>
+                  </td>
+                  <td className="px-3 py-2.5">
+                    <div className="flex flex-wrap gap-1">
+                      {alloc.vaccines.map((v) => (
+                        <span key={v.antigenId} className="text-[10px] bg-primary/10 text-primary-700 px-1.5 py-0.5 rounded font-medium">
+                          {v.antigenId} ×{v.quantityReserved}
+                        </span>
+                      ))}
+                    </div>
+                  </td>
+                  <td className="px-3 py-2.5">
+                    <span className={`text-[11px] font-semibold px-2 py-0.5 rounded-full ${ALLOCATION_STATUS_COLOR[alloc.status]}`}>
+                      {ALLOCATION_STATUS_LABEL[alloc.status]}
+                    </span>
+                  </td>
+                  <td className="px-3 py-2.5">
+                    <button
+                      className="text-[11px] text-primary hover:underline"
+                      onClick={() => navigate('/logistique/allocations')}
+                    >
+                      Détail
+                    </button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        )}
+      </div>
+    </div>
+  );
+}
+
+// ──────────────────────────────────────────────────────────────────────────────
 
 export default function PlanificationDetailPage() {
   const { id } = useParams<{ id: string }>();
@@ -291,18 +629,11 @@ export default function PlanificationDetailPage() {
         </div>
       </div>
 
-      {/* Fake map placeholder */}
-      <div className="bg-stone-100 rounded-lg h-48 flex items-center justify-center border border-stone-200">
-        <div className="text-center text-stone-400">
-          <MapPin size={24} className="mx-auto mb-2" />
-          <div className="text-xs">Carte des itinéraires</div>
-          {nomadOpps.length > 0 && (
-            <div className="flex items-center gap-1 text-[11px] text-primary mt-1 justify-center">
-              <Tent size={11} /> {nomadOpps.length} arrêt{nomadOpps.length > 1 ? 's' : ''} nomade{nomadOpps.length > 1 ? 's' : ''}
-            </div>
-          )}
-        </div>
-      </div>
+      <PlanItineraryMap
+        itineraries={plan.versions[plan.activeVersionIndex]?.itineraries ?? []}
+        height={400}
+        nomadStopsCount={plan.systemProposal.nomadStopsCount}
+      />
 
       {plan.status === 'in_execution' && plan.executionProgress && (
         <div className="bg-white border border-stone-200 rounded-lg p-4">
@@ -352,64 +683,40 @@ export default function PlanificationDetailPage() {
 
   const renderItineraries = () => {
     const active = plan.versions[plan.activeVersionIndex];
+    const itinsByTeam = new Map<string, typeof active.itineraries>();
+    for (const itin of active?.itineraries ?? []) {
+      const list = itinsByTeam.get(itin.teamId) ?? [];
+      list.push(itin);
+      itinsByTeam.set(itin.teamId, list);
+    }
+    const teamEntries = [...itinsByTeam.entries()];
+    const COLORS = ['#1E5BA8', '#16A34A', '#9333EA', '#EA580C', '#CA8A04', '#DB2777'];
     return (
-      <div className="space-y-4">
-        {plan.generationParams.availableTeams.map((teamId) => {
-          const teamItins = active?.itineraries.filter((i) => i.teamId === teamId) ?? [];
-          if (teamItins.length === 0) {
-            teamItins.push(...(active?.itineraries ?? []));
-          }
-          return (
-            <div key={teamId} className="bg-white border border-stone-200 rounded-lg overflow-hidden">
-              <div className="px-4 py-2.5 border-b border-stone-100 bg-stone-50">
-                <div className="text-xs font-semibold text-stone-700 flex items-center gap-2">
-                  <User size={12} /> {teamId}
-                </div>
-              </div>
-              <div className="p-3 space-y-2">
-                {teamItins.slice(0, 2).map((itin) => (
-                  <div key={itin.day}>
-                    <div className="text-[11px] font-semibold text-stone-500 mb-1.5">
-                      Jour {itin.day} — {itin.date.toLocaleDateString('fr-FR', { weekday: 'short', day: '2-digit', month: 'short' })}
-                    </div>
-                    <div className="space-y-1 pl-3 border-l-2 border-stone-100">
-                      {itin.villages.map((v) => (
-                        <div key={v.villageId} className={`flex items-center gap-2 text-xs py-1 px-2 rounded ${v.nomadOpportunityId ? 'bg-primary/5 border border-primary/10' : ''}`}>
-                          {v.nomadOpportunityId && <Tent size={11} className="text-primary" />}
-                          <span className="font-medium text-stone-700">{v.estimatedArrival}</span>
-                          <span className="text-stone-600">{v.villageName}</span>
-                          <span className="text-stone-400 ml-auto">{v.targetChildren} enfants · {v.estimatedDuration}min</span>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                ))}
-              </div>
+      <div className="space-y-5">
+        {teamEntries.map(([teamId, itins], teamIdx) => (
+          <div key={teamId} className="bg-white border border-stone-200 rounded-xl overflow-hidden">
+            <div className="px-4 py-2.5 border-b border-stone-100 bg-stone-50 flex items-center gap-2">
+              <span className="w-3 h-3 rounded-full shrink-0" style={{ background: COLORS[teamIdx % COLORS.length] }} />
+              <span className="text-xs font-semibold text-stone-700">{teamId}</span>
+              <span className="text-[11px] text-stone-400 ml-auto">
+                {itins.reduce((s, i) => s + i.villages.length, 0)} villages · {itins.reduce((s, i) => s + i.totalDistanceKm, 0)} km
+              </span>
             </div>
-          );
-        })}
+            <div className="p-4 space-y-6">
+              {itins.map((itin) => (
+                <ItineraryDayBlock key={itin.day} itin={itin} teamColor={COLORS[teamIdx % COLORS.length]} />
+              ))}
+            </div>
+          </div>
+        ))}
+        {teamEntries.length === 0 && (
+          <div className="py-10 text-center text-sm text-stone-400">Aucun itinéraire généré pour ce plan</div>
+        )}
       </div>
     );
   };
 
-  const renderResources = () => (
-    <div className="space-y-3">
-      <div className="bg-stone-50 rounded-lg p-4 text-sm text-stone-600">
-        Allocations liées au plan.{' '}
-        <button className="text-primary underline" onClick={() => navigate('/logistique/allocations')}>
-          Voir dans le module Logistique →
-        </button>
-      </div>
-      <div className="bg-white border border-stone-200 rounded-lg p-4 space-y-2">
-        {plan.generationParams.availableTeams.map((t) => (
-          <div key={t} className="flex items-center justify-between text-sm">
-            <span className="text-stone-700">{t}</span>
-            <span className="text-[11px] bg-stone-100 text-stone-500 px-1.5 py-0.5 rounded">Alloué</span>
-          </div>
-        ))}
-      </div>
-    </div>
-  );
+  const renderResources = () => <ResourcesTab plan={plan} />;
 
   const renderConflicts = () => {
     if (plan.resourceConflicts.length === 0) {

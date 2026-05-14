@@ -16,6 +16,7 @@ import { mockStock, ANTIGEN_LIST } from '../data/mockStock';
 import { getTeams } from '../data/mockTeams';
 import { mockNomadOpportunities, GROUP_TYPE_LABEL, CONFIDENCE_LABEL, CONFIDENCE_COLOR } from '../data/mockNomadOpportunities';
 import { mockMicroPlans } from '../data/mockMicroPlans';
+import { PlanItineraryMap } from '../components/map/PlanItineraryMap';
 
 const STEPS = [
   { number: 1, label: 'Cadrage' },
@@ -489,6 +490,18 @@ export default function PlanificationNouveauPage() {
                 </div>
               ))}
             </div>
+
+            {/* Enriched map */}
+            {(() => {
+              const demoItins = mockMicroPlans[0].versions[mockMicroPlans[0].activeVersionIndex]?.itineraries ?? [];
+              return (
+                <PlanItineraryMap
+                  itineraries={demoItins}
+                  height={350}
+                  nomadStopsCount={nomadCount}
+                />
+              );
+            })()}
 
             {nomadCount > 0 && (
               <div className="flex items-center gap-2 bg-primary/10 border border-primary/20 rounded-lg px-3 py-2">
