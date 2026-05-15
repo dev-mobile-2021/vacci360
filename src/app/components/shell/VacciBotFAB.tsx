@@ -1,8 +1,8 @@
 import { useEffect, useRef, useState } from 'react';
+import { useNavigate } from 'react-router';
 import { Sparkles, X, Maximize2, Minus, Send } from 'lucide-react';
 import { cn } from '../../lib/cn';
 import { useAuth } from '../../lib/auth';
-import { useToast } from '../../lib/toast';
 
 interface ChatMessage {
   id: string;
@@ -21,7 +21,7 @@ const STUB_REPLY =
 
 export function VacciBotFAB() {
   const { user } = useAuth();
-  const { toast } = useToast();
+  const navigate = useNavigate();
   const [open, setOpen] = useState(false);
   const [input, setInput] = useState('');
   const firstName = user?.name.split(' ').slice(-1)[0] ?? '';
@@ -99,13 +99,7 @@ export function VacciBotFAB() {
             </div>
             <IconBtn
               label="Ouvrir en page complète"
-              onClick={() =>
-                toast({
-                  type: 'info',
-                  title: 'Disponible dans le module VacciBot',
-                  description: 'Sera livré au Sprint 6 — Assistant IA.',
-                })
-              }
+              onClick={() => { setOpen(false); navigate('/vaccibot'); }}
             >
               <Maximize2 size={16} />
             </IconBtn>

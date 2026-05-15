@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { BellRing, Plus, Mail, MessageSquare, Smartphone, Bell, Edit2, Trash2, ToggleLeft, ToggleRight, FlaskConical } from 'lucide-react';
 import { Button } from '../components/ui/Button';
 import { Badge } from '../components/ui/Badge';
@@ -75,6 +75,12 @@ function RuleModal({ rule, onClose, onSave }: {
   const [roles, setRoles] = useState<string[]>(rule?.roles ?? []);
   const [delay, setDelay] = useState<Delay>(rule?.delay ?? 'immediate');
   const [condition, setCondition] = useState(rule?.condition ?? '');
+
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => { if (e.key === 'Escape') onClose(); };
+    document.addEventListener('keydown', onKey);
+    return () => document.removeEventListener('keydown', onKey);
+  }, [onClose]);
 
   const toggleChannel = (c: Channel) =>
     setChannels((prev) => prev.includes(c) ? prev.filter((x) => x !== c) : [...prev, c]);

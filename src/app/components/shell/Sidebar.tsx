@@ -68,7 +68,18 @@ const SECTIONS: NavSection[] = [
 
 export function Sidebar() {
   const { user } = useAuth();
-  const [collapsed, setCollapsed] = useState(false);
+  // Auto-collapse on narrow viewports; remember user preference in localStorage
+  const [collapsed, setCollapsed] = useState(() => {
+    const stored = localStorage.getItem('sidebar-collapsed');
+    if (stored !== null) return stored === 'true';
+    return typeof window !== 'undefined' && window.innerWidth < 1024;
+  });
+
+  const toggle = () => {
+    const next = !collapsed;
+    setCollapsed(next);
+    localStorage.setItem('sidebar-collapsed', String(next));
+  };
 
   if (!user) return null;
 
@@ -85,7 +96,7 @@ export function Sidebar() {
       <div className="h-16 flex items-center justify-end px-3 border-b border-stone-200">
         <button
           type="button"
-          onClick={() => setCollapsed((c) => !c)}
+          onClick={toggle}
           aria-label={collapsed ? 'Étendre la barre latérale' : 'Rétracter la barre latérale'}
           className="size-8 grid place-items-center rounded-md text-stone-500 hover:bg-stone-200 hover:text-stone-800"
         >

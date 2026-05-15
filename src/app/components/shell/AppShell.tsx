@@ -1,8 +1,19 @@
-import { Outlet } from 'react-router';
+import { useEffect } from 'react';
+import { Outlet, useLocation } from 'react-router';
 import { Sidebar } from './Sidebar';
 import { Header } from './Header';
 import { OfflineBanner } from './OfflineBanner';
 import { VacciBotFAB } from './VacciBotFAB';
+
+/** Scrolls the main content area to top on every route change. */
+function ScrollToTop() {
+  const { pathname } = useLocation();
+  useEffect(() => {
+    const main = document.getElementById('main-scroll');
+    if (main) main.scrollTop = 0;
+  }, [pathname]);
+  return null;
+}
 
 export function AppShell() {
   return (
@@ -12,8 +23,14 @@ export function AppShell() {
         <Sidebar />
         <div className="flex-1 min-w-0 flex flex-col">
           <Header />
-          <main className="flex-1 p-6 overflow-x-hidden">
-            <Outlet />
+          <main
+            id="main-scroll"
+            className="flex-1 overflow-y-auto overflow-x-hidden"
+          >
+            <ScrollToTop />
+            <div className="px-6 py-5 min-h-full">
+              <Outlet />
+            </div>
           </main>
         </div>
       </div>

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router';
 import {
   ArrowLeft, Play, Plus, Edit2, Trash2, CheckCircle2,
@@ -304,6 +304,16 @@ export default function AdminWorkflowDetailPage() {
   const [simulOpen, setSimulOpen] = useState(false);
   const [activateOpen, setActivateOpen] = useState(false);
   const [activeStateId, setActiveStateId] = useState<string | null>(null);
+
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key !== 'Escape') return;
+      if (activateOpen) { setActivateOpen(false); return; }
+      if (simulOpen) { setSimulOpen(false); }
+    };
+    document.addEventListener('keydown', onKey);
+    return () => document.removeEventListener('keydown', onKey);
+  }, [simulOpen, activateOpen]);
 
   const handleActivate = () => {
     setActivateOpen(false);

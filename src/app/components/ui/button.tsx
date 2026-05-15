@@ -9,22 +9,27 @@ const buttonVariants = cva(
   {
     variants: {
       variant: {
-        default: "bg-primary text-primary-foreground hover:bg-primary/90",
+        default: "bg-primary text-white hover:bg-primary-700",
         destructive:
-          "bg-destructive text-white hover:bg-destructive/90 focus-visible:ring-destructive/20 dark:focus-visible:ring-destructive/40 dark:bg-destructive/60",
+          "bg-danger text-white hover:bg-danger-700 focus-visible:ring-danger/20",
         outline:
-          "border bg-background text-foreground hover:bg-accent hover:text-accent-foreground dark:bg-input/30 dark:border-input dark:hover:bg-input/50",
+          "border border-stone-300 bg-white text-stone-700 hover:bg-stone-50 hover:border-stone-400",
         secondary:
-          "bg-secondary text-secondary-foreground hover:bg-secondary/80",
+          "border border-stone-200 bg-white text-stone-700 hover:bg-stone-50 hover:border-stone-300",
         ghost:
-          "hover:bg-accent hover:text-accent-foreground dark:hover:bg-accent/50",
+          "text-stone-700 hover:bg-stone-100 hover:text-stone-900",
         link: "text-primary underline-offset-4 hover:underline",
+        // ─── Semantic variants ──────────────────────────────────────────
+        ai: "bg-ai text-white hover:bg-ai-600",
+        success: "bg-success text-white hover:bg-success-700",
+        danger: "bg-danger text-white hover:bg-danger-700",
       },
       size: {
-        default: "h-9 px-4 py-2 has-[>svg]:px-3",
+        default: "h-10 px-4 py-2 has-[>svg]:px-3",
         sm: "h-8 rounded-md gap-1.5 px-3 has-[>svg]:px-2.5",
-        lg: "h-10 rounded-md px-6 has-[>svg]:px-4",
-        icon: "size-9 rounded-md",
+        lg: "h-11 rounded-md px-6 has-[>svg]:px-4",
+        icon: "size-10 rounded-md",
+        "icon-sm": "size-8 rounded-md",
       },
     },
     defaultVariants: {
