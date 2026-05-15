@@ -4,8 +4,8 @@ import {
   ArrowLeft, Play, Plus, Edit2, Trash2, CheckCircle2,
   AlertCircle, RotateCcw, ChevronRight,
 } from 'lucide-react';
-import { Button } from '../components/ui/Button';
-import { Badge } from '../components/ui/Badge';
+import { Button } from '../components/ui/button';
+import { Badge } from '../components/ui/badge';
 import { useToast } from '../lib/toast';
 
 // ─── Mock workflow data ───────────────────────────────────────────────────────

@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Settings, ChevronDown, ChevronUp, CheckCircle2, XCircle, Upload } from 'lucide-react';
-import { Button } from '../components/ui/Button';
+import { Button } from '../components/ui/button';
 import { useToast } from '../lib/toast';
 
 // ─── Accordion section ────────────────────────────────────────────────────────

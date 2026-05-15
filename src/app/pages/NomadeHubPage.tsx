@@ -4,7 +4,7 @@ import {
   Plus, Tent, Users, Shield, AlertTriangle, CheckCircle2,
   Clock, ExternalLink, Sparkles,
 } from 'lucide-react';
-import { Button } from '../components/ui/Button';
+import { Button } from '../components/ui/button';
 import { useAuth } from '../lib/auth';
 import {
   Breadcrumb, BreadcrumbList, BreadcrumbItem, BreadcrumbLink,

@@ -1,7 +1,7 @@
 import { MapPin, CheckCircle2 } from 'lucide-react';
-import { Card, CardBody, CardHeader, CardTitle } from '../components/ui/Card';
-import { Button } from '../components/ui/Button';
-import { Badge } from '../components/ui/Badge';
+import { Card, CardBody, CardHeader, CardTitle } from '../components/ui/card';
+import { Button } from '../components/ui/button';
+import { Badge } from '../components/ui/badge';
 import { useAuth } from '../lib/auth';
 import { useScope } from '../lib/scope';
 import { ROLE_LABEL } from '../types';

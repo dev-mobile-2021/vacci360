@@ -1,8 +1,8 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router';
 import { GitBranch, Plus, Upload, Download, Eye, Archive, CheckCircle2, FileEdit } from 'lucide-react';
-import { Button } from '../components/ui/Button';
-import { Badge } from '../components/ui/Badge';
+import { Button } from '../components/ui/button';
+import { Badge } from '../components/ui/badge';
 import { DataTable } from '../components/data/DataTable';
 import type { ColumnDef } from '@tanstack/react-table';
 

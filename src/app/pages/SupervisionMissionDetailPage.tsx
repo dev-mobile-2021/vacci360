@@ -4,7 +4,7 @@ import {
   AlertTriangle, CheckCircle2, XCircle, MapPin, Tent,
   Clock, PhoneCall, Flag, Square, ChevronRight, User,
 } from 'lucide-react';
-import { Button } from '../components/ui/Button';
+import { Button } from '../components/ui/button';
 import { useToast } from '../lib/toast';
 import {
   Breadcrumb, BreadcrumbList, BreadcrumbItem, BreadcrumbLink,

@@ -4,7 +4,7 @@ import {
   Plus, Download, AlertTriangle, Tent, MoreVertical, ChevronRight,
   Users, TrendingUp, ClipboardList, Clock,
 } from 'lucide-react';
-import { Button } from '../components/ui/Button';
+import { Button } from '../components/ui/button';
 import {
   Breadcrumb, BreadcrumbList, BreadcrumbItem, BreadcrumbPage,
 } from '../components/ui/breadcrumb';

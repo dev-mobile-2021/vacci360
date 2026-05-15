@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { BellRing, Plus, Mail, MessageSquare, Smartphone, Bell, Edit2, Trash2, ToggleLeft, ToggleRight, FlaskConical } from 'lucide-react';
-import { Button } from '../components/ui/Button';
-import { Badge } from '../components/ui/Badge';
+import { Button } from '../components/ui/button';
+import { Badge } from '../components/ui/badge';
 import { useToast } from '../lib/toast';
 
 // ─── Types & mock data ────────────────────────────────────────────────────────

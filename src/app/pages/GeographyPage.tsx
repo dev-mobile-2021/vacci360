@@ -12,8 +12,8 @@ import {
 } from '../data/mockGeography';
 import type { GeoNode, GeoLevel } from '../types/geography';
 import type { Village } from '../types/village';
-import { Card, CardBody, CardHeader, CardTitle } from '../components/ui/Card';
-import { Badge } from '../components/ui/Badge';
+import { Card, CardBody, CardHeader, CardTitle } from '../components/ui/card';
+import { Badge } from '../components/ui/badge';
 import { CoverageBar } from '../components/data/CoverageBar';
 import { AccessibilityBadge } from '../components/data/AccessibilityBadge';
 import { MapView, type MapMarker } from '../components/map/MapView';

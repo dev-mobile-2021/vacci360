@@ -4,7 +4,7 @@ import {
   ChevronRight, ChevronLeft, CheckCircle2, AlertTriangle, Info,
   Tent, MapPin, Users, Package, Loader2,
 } from 'lucide-react';
-import { Button } from '../components/ui/Button';
+import { Button } from '../components/ui/button';
 import { useToast } from '../lib/toast';
 import { useAuth } from '../lib/auth';
 import {

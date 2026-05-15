@@ -1,10 +1,10 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router';
-import { Card, CardBody, CardHeader, CardTitle } from '../components/ui/Card';
-import { Button } from '../components/ui/Button';
-import { Input } from '../components/ui/Input';
-import { Avatar } from '../components/ui/Avatar';
-import { Toggle } from '../components/ui/Toggle';
+import { Card, CardBody, CardHeader, CardTitle } from '../components/ui/card';
+import { Button } from '../components/ui/button';
+import { Input } from '../components/ui/input';
+import { Avatar } from '../components/ui/avatar';
+import { Toggle } from '../components/ui/toggle';
 import { Modal } from '../components/ui/Modal';
 import { useAuth } from '../lib/auth';
 import { useToast } from '../lib/toast';

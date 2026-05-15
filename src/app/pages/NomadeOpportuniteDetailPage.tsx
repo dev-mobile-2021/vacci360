@@ -4,7 +4,7 @@ import {
   MapPin, Clock, AlertTriangle, CheckCircle2, Shield, Tent, Users,
   ExternalLink, ChevronRight,
 } from 'lucide-react';
-import { Button } from '../components/ui/Button';
+import { Button } from '../components/ui/button';
 import { Modal } from '../components/ui/Modal';
 import { useToast } from '../lib/toast';
 import {

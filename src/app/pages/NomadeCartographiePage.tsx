@@ -6,7 +6,7 @@ import {
   Breadcrumb, BreadcrumbList, BreadcrumbItem, BreadcrumbLink,
   BreadcrumbSeparator, BreadcrumbPage,
 } from '../components/ui/breadcrumb';
-import { Button } from '../components/ui/Button';
+import { Button } from '../components/ui/button';
 import {
   mockNomadOpportunities,
   GROUP_TYPE_LABEL, GROUP_TYPE_COLOR, CONFIDENCE_LABEL, STATUS_LABEL,

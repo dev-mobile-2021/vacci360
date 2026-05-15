@@ -11,11 +11,11 @@ import type { Team, TeamStatus, VehicleType } from '../types/team';
 import { TEAM_STATUS_LABEL, VEHICLE_LABEL, ROLE_LABEL } from '../types/team';
 import { useScope } from '../lib/scope';
 import { SCOPE_TO_GEO_NODE } from '../lib/scopeGeo';
-import { Card } from '../components/ui/Card';
-import { Button } from '../components/ui/Button';
-import { Input } from '../components/ui/Input';
-import { Badge } from '../components/ui/Badge';
-import { Avatar } from '../components/ui/Avatar';
+import { Card } from '../components/ui/card';
+import { Button } from '../components/ui/button';
+import { Input } from '../components/ui/input';
+import { Badge } from '../components/ui/badge';
+import { Avatar } from '../components/ui/avatar';
 import { MapView, type MapMarker } from '../components/map/MapView';
 import { cn } from '../lib/cn';
 

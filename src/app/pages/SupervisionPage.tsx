@@ -4,7 +4,7 @@ import {
   Download, FileText, AlertTriangle, CheckCircle2, Users, Wifi,
   WifiOff, MapPin, Tent, ChevronRight, Radio,
 } from 'lucide-react';
-import { Button } from '../components/ui/Button';
+import { Button } from '../components/ui/button';
 import {
   Breadcrumb, BreadcrumbList, BreadcrumbItem, BreadcrumbPage,
 } from '../components/ui/breadcrumb';

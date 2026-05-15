@@ -1,5 +1,5 @@
 import { Construction } from 'lucide-react';
-import { Card, CardBody } from '../components/ui/Card';
+import { Card, CardBody } from '../components/ui/card';
 
 interface Props {
   title: string;

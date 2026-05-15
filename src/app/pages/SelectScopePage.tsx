@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { Navigate, useNavigate } from 'react-router';
 import { Globe, MapPin, Building2, Check } from 'lucide-react';
 import type { LucideIcon } from 'lucide-react';
-import { Button } from '../components/ui/Button';
+import { Button } from '../components/ui/button';
 import { useAuth } from '../lib/auth';
 import { useScope } from '../lib/scope';
 import type { Scope, ScopeLevel } from '../types';

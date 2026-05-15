@@ -5,7 +5,7 @@ import {
   AlertTriangle, XCircle, AlertCircle, CheckCircle2, Truck, Clock,
 } from 'lucide-react';
 import { TileCard } from '../components/data/TileCard';
-import { Card, CardBody, CardHeader, CardTitle } from '../components/ui/Card';
+import { Card, CardBody, CardHeader, CardTitle } from '../components/ui/card';
 import {
   Breadcrumb, BreadcrumbList, BreadcrumbItem, BreadcrumbPage,
 } from '../components/ui/breadcrumb';

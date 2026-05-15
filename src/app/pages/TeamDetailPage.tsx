@@ -16,10 +16,10 @@ import type { Team, TeamStatus, VehicleType } from '../types/team';
 import {
   TEAM_STATUS_LABEL, VEHICLE_LABEL, ROLE_LABEL, EQUIPMENT_LABEL,
 } from '../types/team';
-import { Card, CardBody, CardHeader, CardTitle } from '../components/ui/Card';
-import { Button } from '../components/ui/Button';
-import { Badge } from '../components/ui/Badge';
-import { Avatar } from '../components/ui/Avatar';
+import { Card, CardBody, CardHeader, CardTitle } from '../components/ui/card';
+import { Button } from '../components/ui/button';
+import { Badge } from '../components/ui/badge';
+import { Avatar } from '../components/ui/avatar';
 import { MapView } from '../components/map/MapView';
 import { cn } from '../lib/cn';
 

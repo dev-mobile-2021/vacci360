@@ -2,8 +2,8 @@ import { useState } from 'react';
 import type { FormEvent } from 'react';
 import { useNavigate, Navigate } from 'react-router';
 import { Eye, EyeOff, Mail, Lock, AlertCircle } from 'lucide-react';
-import { Input } from '../components/ui/Input';
-import { Button } from '../components/ui/Button';
+import { Input } from '../components/ui/input';
+import { Button } from '../components/ui/button';
 import { useAuth } from '../lib/auth';
 
 export default function LoginPage() {

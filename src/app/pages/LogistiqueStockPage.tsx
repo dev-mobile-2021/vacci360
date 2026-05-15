@@ -1,6 +1,6 @@
 import { useState, useMemo } from 'react';
 import { Plus, ArrowRightLeft, Download, MoreVertical, ChevronUp, ChevronDown, Search } from 'lucide-react';
-import { Button } from '../components/ui/Button';
+import { Button } from '../components/ui/button';
 import { Modal } from '../components/ui/Modal';
 import { useToast } from '../lib/toast';
 import {

@@ -1,7 +1,7 @@
 import { useState, useMemo } from 'react';
 import { FileSearch, Download, Settings2, CheckCircle2, XCircle, ChevronRight, X } from 'lucide-react';
-import { Button } from '../components/ui/Button';
-import { Badge } from '../components/ui/Badge';
+import { Button } from '../components/ui/button';
+import { Badge } from '../components/ui/badge';
 import { DataTable } from '../components/data/DataTable';
 import type { ColumnDef } from '@tanstack/react-table';
 

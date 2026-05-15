@@ -14,9 +14,9 @@ import {
 } from 'lucide-react';
 import { useState } from 'react';
 import { TileCard } from '../components/data/TileCard';
-import { Card, CardBody, CardHeader, CardTitle } from '../components/ui/Card';
-import { Button } from '../components/ui/Button';
-import { Avatar } from '../components/ui/Avatar';
+import { Card, CardBody, CardHeader, CardTitle } from '../components/ui/card';
+import { Button } from '../components/ui/button';
+import { Avatar } from '../components/ui/avatar';
 import { Progress } from '../components/ui/progress';
 import { useToast } from '../lib/toast';
 import {
