@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Bell, Search } from 'lucide-react';
-import { Input } from '../ui/Input';
+import { Input } from '../ui/input';
 import { ScopeSelector } from './ScopeSelector';
 import { UserMenu } from './UserMenu';
 import { NotificationDrawer } from './NotificationDrawer';

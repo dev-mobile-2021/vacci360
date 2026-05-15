@@ -1,7 +1,7 @@
 import type { LucideIcon } from 'lucide-react';
 import { Construction } from 'lucide-react';
-import { Button } from '../ui/Button';
-import { Badge } from '../ui/Badge';
+import { Button } from '../ui/button';
+import { Badge } from '../ui/badge';
 
 export interface EmptyStateProps {
   icon?: LucideIcon;

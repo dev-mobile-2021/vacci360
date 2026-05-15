@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { Upload, FileSpreadsheet, CheckCircle2, AlertCircle } from 'lucide-react';
 import Papa from 'papaparse';
 import { Modal } from '../ui/Modal';
-import { Button } from '../ui/Button';
+import { Button } from '../ui/button';
 import { useToast } from '../../lib/toast';
 import { cn } from '../../lib/cn';
 

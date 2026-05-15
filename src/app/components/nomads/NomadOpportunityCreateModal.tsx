@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Tent, Users, Shield, AlertTriangle, CheckCircle2, ChevronRight, MapPin, Info } from 'lucide-react';
-import { Button } from '../ui/Button';
+import { Button } from '../ui/button';
 import { Modal } from '../ui/Modal';
 import { useToast } from '../../lib/toast';
 import { ANTIGEN_LIST } from '../../data/mockStock';

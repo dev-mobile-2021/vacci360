@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router';
 import { ChevronDown, User, Settings, HelpCircle, LogOut } from 'lucide-react';
-import { Avatar } from '../ui/Avatar';
+import { Avatar } from '../ui/avatar';
 import { useAuth } from '../../lib/auth';
 import { ROLE_LABEL } from '../../types';
 
