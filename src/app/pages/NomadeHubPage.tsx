@@ -135,11 +135,11 @@ export default function NomadeHubPage() {
 
       {/* VacciBot priorisation encart */}
       {(() => {
-        const urgentCount = filtered.filter((o) => {
+        const urgentCount = visibleOpps.filter((o) => {
           const diff = (o.windowEnd.getTime() - Date.now()) / 86400000;
           return diff >= 0 && diff <= 7;
         }).length;
-        const top3 = filtered
+        const top3 = visibleOpps
           .filter((o) => { const diff = (o.windowEnd.getTime() - Date.now()) / 86400000; return diff >= 0 && diff <= 7; })
           .slice(0, 3);
         if (urgentCount === 0) return null;
